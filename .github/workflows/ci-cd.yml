@@ -1,0 +1,81 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: deployguard_db
+          POSTGRES_USER: deployguard_user
+          POSTGRES_PASSWORD: DeployGuard123!
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven
+      run: mvn clean package -B -q
+
+    - name: Run Tests
+      run: mvn test -B -q
+      env:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/deployguard_db
+        SPRING_DATASOURCE_USERNAME: deployguard_user
+        SPRING_DATASOURCE_PASSWORD: DeployGuard123!
+
+    - name: Generate Coverage Report
+      run: mvn jacoco:report -q
+      
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: codecov-umbrella
+
+    - name: Build Docker Image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: docker build -t deployguard:${{ github.sha }} .
+
+    - name: Push to Docker Registry
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        docker tag deployguard:${{ github.sha }} deployguard:latest
+        docker push deployguard:latest
+
+  deploy:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Production
+      run: |
+        echo "Deploying to production..."
+        # Add your deployment commands here
+        # Example: kubectl apply -f k8s/

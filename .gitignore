@@ -1,0 +1,63 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.log
+
+# Java
+*.class
+*.jar
+*.zip
+*.rar
+
+# Gradle
+.gradle/
+build/
+
+# Spring Boot
+.mvn/
+*.jar
+*.war
+application.log
+
+# Database
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node/npm (Frontend)
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Project specific
+db/
+data/
+uploads/
+temp/

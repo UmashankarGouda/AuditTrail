@@ -1,0 +1,6 @@
+component_name,component_type,change_type,changed_by,deployment_id,changed_at,old_value,new_value
+AccountTrigger,ApexClass,MODIFIED,john.dev,1,2024-01-15T10:30:00,old trigger code,new trigger code
+OpportunityLayout,PageLayout,CREATED,jane.dev,1,2024-01-15T10:31:00,,opportunity field layout
+CustomObject__c,CustomObject,MODIFIED,admin.user,1,2024-01-15T10:32:00,v1.0,v1.1
+PermissionSet,PermissionSet,MODIFIED,john.dev,1,2024-01-15T10:33:00,,admin perms
+QuoteTemplate,EmailTemplate,DELETED,system.admin,1,2024-01-15T10:34:00,old template,
