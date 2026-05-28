@@ -547,4 +547,4 @@ MIT
 
 ## Contact
 
-For questions or issues, please open a GitHub issue or contact the development team.
+umashankars.work@gmail.com
