@@ -66,15 +66,16 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push Docker images
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.DOCKER_USERNAME != '' && secrets.DOCKER_PASSWORD != ''
+    - name: Log in and push Docker image (if credentials present)
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: |
+        if [ -z "${{ secrets.DOCKER_USERNAME }}" ] || [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
+          echo "Skipping Docker login/push because DOCKER_USERNAME/DOCKER_PASSWORD are not configured in repository secrets."
+          exit 0
+        fi
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
         docker tag deployguard:${{ github.sha }} deployguard:latest
         docker push deployguard:latest
-
-    - name: Skip Docker push when credentials missing
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && (secrets.DOCKER_USERNAME == '' || secrets.DOCKER_PASSWORD == '')
-      run: echo "Skipping Docker push because DOCKER_USERNAME/DOCKER_PASSWORD are not configured in repository secrets."
 
   deploy:
     needs: build-and-test
