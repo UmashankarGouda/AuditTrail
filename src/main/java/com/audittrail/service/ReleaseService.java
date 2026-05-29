@@ -132,6 +132,19 @@ public class ReleaseService {
         return mapToDTO(updated);
     }
 
+    public void deleteRelease(Long releaseId) {
+        Optional<Release> releaseOpt = releaseRepository.findById(releaseId);
+        if (releaseOpt.isEmpty()) {
+            throw new IllegalArgumentException("Release not found with ID: " + releaseId);
+        }
+
+        // Delete associated deployments first
+        releaseDeploymentRepository.deleteByReleaseId(releaseId);
+        
+        // Delete the release
+        releaseRepository.deleteById(releaseId);
+    }
+
     public ReleaseSummaryDTO getReleaseSummary(Long releaseId) {
         Optional<Release> releaseOpt = releaseRepository.findById(releaseId);
         if (releaseOpt.isEmpty()) {

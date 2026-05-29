@@ -14,4 +14,6 @@ public interface ReleaseDeploymentRepository extends JpaRepository<ReleaseDeploy
     boolean existsByReleaseIdAndDeploymentId(Long releaseId, Long deploymentId);
     
     void deleteByReleaseIdAndDeploymentId(Long releaseId, Long deploymentId);
+    
+    void deleteByReleaseId(Long releaseId);
 }
