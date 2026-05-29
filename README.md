@@ -1,6 +1,7 @@
 # AuditTrail - Deployment & Audit Management System
 
-A comprehensive full-stack application for tracking deployments, auditing metadata changes, managing releases, and visualizing deployment data with an interactive dashboard.
+AuditTrail - A comprehensive full-stack application for deployment tracking, audit management, and change visualization. Features Spring Boot 3 backend, 
+React 18 frontend, PostgreSQL database, and Docker containerization. Batch process 40K+ metadata records with real-time dashboard analytics.
 
 **Backend:** Spring Boot 3.2.3 | **Frontend:** React 18 | **Database:** PostgreSQL 18
 
@@ -547,4 +548,4 @@ MIT
 
 ## Contact
 
-For questions or issues, please open a GitHub issue or contact the development team.
+umashankars.work@gmail.com
